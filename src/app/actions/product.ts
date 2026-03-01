@@ -26,7 +26,6 @@ export async function createProduct(formData: FormData) {
     }
 
     const validated = ProductSchema.parse(data)
-
     const slug = validated.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
     await prisma.product.create({
@@ -52,7 +51,6 @@ export async function updateProduct(id: string, formData: FormData) {
     }
 
     const validated = ProductSchema.parse(data)
-
     const slug = validated.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
     await prisma.product.update({
@@ -68,29 +66,15 @@ export async function updateProduct(id: string, formData: FormData) {
 }
 
 export async function deleteProduct(id: string) {
-    await prisma.product.delete({
-        where: { id },
-    })
+    try {
+        await prisma.product.delete({
+            where: { id },
+        })
 
-    revalidatePath('/admin/products')
-    revalidatePath('/products')
-}
-
-export async function createCategory(formData: FormData) {
-    const name = formData.get('name') as string
-    const description = formData.get('description') as string
-    const image = formData.get('image') as string
-
-    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
-
-    await prisma.category.create({
-        data: {
-            name,
-            slug,
-            description,
-            image,
-        },
-    })
-
-    revalidatePath('/admin/categories')
+        revalidatePath('/admin/products')
+        revalidatePath('/products')
+    } catch (error) {
+        console.error('Failed to delete product:', error)
+        throw new Error('Failed to delete product')
+    }
 }

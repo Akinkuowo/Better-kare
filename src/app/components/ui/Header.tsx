@@ -16,6 +16,7 @@ export default function Header() {
     const { data: session } = useSession()
     const { cartCount } = useCart()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
     const [categories, setCategories] = useState<Category[]>([])
 
     useEffect(() => {
@@ -80,26 +81,38 @@ export default function Header() {
 
                         {/* User */}
                         {session ? (
-                            <div className="relative group">
-                                <button className="text-gray-600 hover:text-gray-900">
+                            <div className="relative">
+                                <button
+                                    className="text-gray-600 hover:text-gray-900"
+                                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                                >
                                     <User className="w-6 h-6" />
                                 </button>
-                                <div className="absolute hidden group-hover:block top-full right-0 bg-white shadow-lg rounded-xl py-2 min-w-[160px] border border-gray-100 mt-1">
-                                    <p className="px-4 py-2 text-xs text-gray-400 border-b border-gray-100">
-                                        {session.user?.email}
-                                    </p>
-                                    {session.user?.role === 'ADMIN' && (
-                                        <Link href="/admin" className="block px-4 py-2 text-gray-600 hover:bg-gray-50 text-sm">
-                                            Admin Dashboard
-                                        </Link>
-                                    )}
-                                    <button
-                                        onClick={() => signOut()}
-                                        className="block w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-50 text-sm"
-                                    >
-                                        Sign Out
-                                    </button>
-                                </div>
+                                {isUserMenuOpen && (
+                                    <div className="absolute top-full right-0 bg-white shadow-lg rounded-xl py-2 min-w-[160px] border border-gray-100 mt-1">
+                                        <p className="px-4 py-2 text-xs text-gray-400 border-b border-gray-100">
+                                            {session.user?.email}
+                                        </p>
+                                        {(session.user as any)?.role === 'ADMIN' && (
+                                            <Link
+                                                href="/admin"
+                                                className="block px-4 py-2 text-gray-600 hover:bg-gray-50 text-sm"
+                                                onClick={() => setIsUserMenuOpen(false)}
+                                            >
+                                                Admin Dashboard
+                                            </Link>
+                                        )}
+                                        <button
+                                            onClick={() => {
+                                                signOut()
+                                                setIsUserMenuOpen(false)
+                                            }}
+                                            className="block w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-50 text-sm"
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         ) : (
                             <Link href="/login" className="text-gray-600 hover:text-gray-900">

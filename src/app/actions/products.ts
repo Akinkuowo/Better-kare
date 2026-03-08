@@ -20,6 +20,7 @@ export async function createProduct(formData: FormData) {
     const stock = parseInt(formData.get('stock') as string, 10)
     const categoryId = formData.get('categoryId') as string
     const featured = formData.get('featured') === 'on'
+    const isNew = formData.get('isNew') === 'on'
     const imagesRaw = formData.get('images') as string
 
     // Parse image URLs from newline-separated string
@@ -49,6 +50,7 @@ export async function createProduct(formData: FormData) {
             stock: isNaN(stock) ? 0 : stock,
             categoryId,
             featured,
+            isNew,
             images,
         },
     })

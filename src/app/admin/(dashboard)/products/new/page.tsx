@@ -1,7 +1,7 @@
 import { prisma } from '@/app/lib/db'
 import { createProduct } from '@/app/actions/products'
 import Link from 'next/link'
-import { ArrowLeft, ShoppingBag, ImageIcon, Tag, DollarSign, Package, Star } from 'lucide-react'
+import { ArrowLeft, ShoppingBag, ImageIcon, Tag, DollarSign, Package, Star, Sparkles } from 'lucide-react'
 import { ImageUploader } from './image-uploader'
 
 export default async function NewProductPage() {
@@ -163,11 +163,28 @@ export default async function NewProductPage() {
                             </div>
                             <div>
                                 <div className="text-sm font-bold text-gray-800">Featured Product</div>
-                                <div className="text-xs text-gray-400">Show this product in the featured section on the homepage</div>
+                                <div className="text-xs text-gray-400">Show this product in the featured section</div>
                             </div>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="featured" className="sr-only peer" />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                        </label>
+                    </div>
+
+                    {/* New product toggle */}
+                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 bg-sky-50 rounded-xl flex items-center justify-center">
+                                <Sparkles className="w-4 h-4 text-sky-500" />
+                            </div>
+                            <div>
+                                <div className="text-sm font-bold text-gray-800">New Arrival</div>
+                                <div className="text-xs text-gray-400">Mark this product as a new arrival</div>
+                            </div>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="isNew" className="sr-only peer" />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
                         </label>
                     </div>

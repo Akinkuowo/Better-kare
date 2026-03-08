@@ -69,8 +69,13 @@ export default async function AdminProductsPage() {
                       })()}
                     </div>
                     <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-medium text-gray-900 flex items-center gap-2">
                         {product.name}
+                        {product.isNew && (
+                          <span className="px-1.5 py-0.5 rounded-md bg-sky-50 text-sky-600 text-[10px] font-black uppercase border border-sky-100">
+                            New
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

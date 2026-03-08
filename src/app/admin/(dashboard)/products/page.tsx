@@ -1,0 +1,105 @@
+import { prisma } from "@/app/lib/db"
+import Link from "next/link"
+import Image from "next/image"
+import { deleteProduct } from "@/app/actions/products"
+import { DeleteProductButton } from "./delete-button"
+import { Pencil, Plus } from "lucide-react"
+
+export default async function AdminProductsPage() {
+  const products = await prisma.product.findMany({
+    include: { category: true },
+    orderBy: { createdAt: 'desc' }
+  })
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold">Products</h2>
+        <Link
+          href="/admin/products/new"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
+        >
+          <Plus className="w-5 h-5 mr-2" />
+          Add Product
+        </Link>
+      </div>
+
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Product
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Category
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Price
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Stock
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <div className="h-10 w-10 flex-shrink-0">
+                      {(() => {
+                          const imgs: string[] = Array.isArray(product.images)
+                              ? (product.images as string[])
+                              : typeof product.images === 'string'
+                                  ? JSON.parse(product.images)
+                                  : []
+                          return imgs[0] ? (
+                              <Image
+                                  src={imgs[0]}
+                                  alt={product.name}
+                                  width={40}
+                                  height={40}
+                                  className="h-10 w-10 rounded-lg object-cover"
+                              />
+                          ) : null
+                      })()}
+                    </div>
+                    <div className="ml-4">
+                      <div className="text-sm font-medium text-gray-900">
+                        {product.name}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{product.category.name}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">${product.price.toFixed(2)}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{product.stock}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <div className="flex space-x-2">
+                    <Link
+                      href={`/admin/products/${product.id}`}
+                      className="text-blue-600 hover:text-blue-900"
+                    >
+                      <Pencil className="w-5 h-5" />
+                    </Link>
+                    <DeleteProductButton productId={product.id} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}

@@ -20,7 +20,7 @@ export default async function AdminDashboardPage() {
         { name: 'Total Products', value: productCount, icon: ShoppingBag, color: 'bg-blue-500' },
         { name: 'Categories', value: categoryCount, icon: FolderTree, color: 'bg-indigo-500' },
         { name: 'Total Orders', value: orderCount, icon: ClipboardList, color: 'bg-emerald-500' },
-        { name: 'Recent Revenue', value: `$${totalSales.toFixed(2)}`, icon: DollarSign, color: 'bg-amber-500' },
+        { name: 'Recent Revenue', value: `₦${totalSales.toLocaleString()}`, icon: DollarSign, color: 'bg-amber-500' },
     ]
 
     return (

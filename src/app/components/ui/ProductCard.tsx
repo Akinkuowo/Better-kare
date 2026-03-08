@@ -35,7 +35,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     <p className="text-sm text-gray-500">{product.category.name}</p>
                     <h3 className="font-semibold text-gray-800">{product.name}</h3>
                     <p className="text-lg font-bold text-gray-900 mt-1">
-                        ${product.price.toFixed(2)}
+                        ₦{product.price.toLocaleString()}
                     </p>
                 </div>
             </div>

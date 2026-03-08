@@ -1,8 +1,10 @@
 import { prisma } from "@/app/lib/db"
+import Image from "next/image"
 import { format } from "date-fns"
 import { OrderStatus } from "@prisma/client"
 import { updateOrderStatus, deleteOrder } from "@/app/actions/order"
 import { Trash2, Package, Clock, CheckCircle, Truck, XCircle } from "lucide-react"
+import { OrderActions } from "./OrderActions"
 
 const statusIcons: Record<string, any> = {
     PENDING: Clock,
@@ -51,7 +53,7 @@ export default async function AdminOrdersPage() {
                                 <div className="flex flex-wrap items-center gap-4">
                                     <div className="text-right">
                                         <div className="text-xs text-gray-400 uppercase tracking-wider font-bold mb-1">Total Amount</div>
-                                        <div className="text-2xl font-black text-indigo-600">${order.total.toFixed(2)}</div>
+                                        <div className="text-2xl font-black text-indigo-600">₦{order.total.toLocaleString()}</div>
                                     </div>
 
                                     <div className={`px-4 py-2 rounded-full border flex items-center gap-2 ${statusColors[order.status]}`}>
@@ -59,31 +61,7 @@ export default async function AdminOrdersPage() {
                                         <span className="font-bold text-sm uppercase">{order.status}</span>
                                     </div>
 
-                                    <div className="flex flex-col gap-2">
-                                        <select
-                                            defaultValue={order.status}
-                                            onChange={async (e) => {
-                                                'use server'
-                                                // Note: In 14.2+, you'd usually wrap this in a transition or use a client component 
-                                                // for better UX. For now, simple status update.
-                                                await updateOrderStatus(order.id, e.target.value as OrderStatus)
-                                            }}
-                                            className="text-sm border-gray-200 rounded-lg focus:ring-indigo-500"
-                                        >
-                                            {Object.values(OrderStatus).map((s) => (
-                                                <option key={s} value={s}>{s}</option>
-                                            ))}
-                                        </select>
-                                        <form action={deleteOrder.bind(null, order.id)}>
-                                            <button
-                                                type="submit"
-                                                onClick={(e) => !confirm('Delete order?') && e.preventDefault()}
-                                                className="w-full py-1 text-xs text-rose-500 hover:text-rose-700 font-medium flex items-center justify-center gap-1"
-                                            >
-                                                <Trash2 className="w-3 h-3" /> Delete
-                                            </button>
-                                        </form>
-                                    </div>
+                                    <OrderActions orderId={order.id} currentStatus={order.status} />
                                 </div>
                             </div>
 
@@ -99,7 +77,7 @@ export default async function AdminOrdersPage() {
                                             </div>
                                             <div className="min-w-0">
                                                 <div className="text-sm font-bold text-gray-800 truncate">{item.name}</div>
-                                                <div className="text-xs text-gray-500">{item.quantity} x ${item.price.toFixed(2)}</div>
+                                                <div className="text-xs text-gray-500">{item.quantity} x ₦{item.price.toLocaleString()}</div>
                                             </div>
                                         </div>
                                     ))}

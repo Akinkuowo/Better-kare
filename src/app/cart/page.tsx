@@ -41,7 +41,7 @@ export default function CartPage() {
                             <div className="flex-1 min-w-0">
                                 <p className="text-xs text-gray-400 uppercase mb-1">{item.categorySlug}</p>
                                 <h3 className="font-semibold text-gray-900 truncate">{item.name}</h3>
-                                <p className="text-gray-700 font-bold mt-1">${item.price.toFixed(2)}</p>
+                                <p className="text-gray-700 font-bold mt-1">₦{item.price.toLocaleString()}</p>
                             </div>
                             <div className="flex items-center gap-3">
                                 <button
@@ -79,13 +79,13 @@ export default function CartPage() {
                             {cartItems.map(item => (
                                 <div key={item.id} className="flex justify-between">
                                     <span>{item.name} × {item.quantity}</span>
-                                    <span>${(item.price * item.quantity).toFixed(2)}</span>
+                                    <span>₦{(item.price * item.quantity).toLocaleString()}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="border-t border-gray-200 pt-4 flex justify-between font-bold text-gray-900 text-lg mb-6">
                             <span>Total</span>
-                            <span>${cartTotal.toFixed(2)}</span>
+                            <span>₦{cartTotal.toLocaleString()}</span>
                         </div>
                         <Link
                             href="/checkout"

@@ -11,13 +11,16 @@ const CategorySchema = z.object({
 })
 
 export async function createCategory(formData: FormData) {
-    const data = {
-        name: formData.get('name') as string,
-        description: formData.get('description') as string,
-        image: formData.get('image') as string,
-    }
+    const name = formData.get('name') as string
+    const description = formData.get('description') as string
+    const imageRaw = formData.get('image') as string
 
-    const validated = CategorySchema.parse(data)
+    // Parse image URL from newline-separated string (take the first one)
+    const image = imageRaw
+        ? imageRaw.split('\n')[0].trim()
+        : ''
+
+    const validated = CategorySchema.parse({ name, description, image })
     const slug = validated.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
     await prisma.category.create({
@@ -32,13 +35,16 @@ export async function createCategory(formData: FormData) {
 }
 
 export async function updateCategory(id: string, formData: FormData) {
-    const data = {
-        name: formData.get('name') as string,
-        description: formData.get('description') as string,
-        image: formData.get('image') as string,
-    }
+    const name = formData.get('name') as string
+    const description = formData.get('description') as string
+    const imageRaw = formData.get('image') as string
 
-    const validated = CategorySchema.parse(data)
+    // Parse image URL from newline-separated string (take the first one)
+    const image = imageRaw
+        ? imageRaw.split('\n')[0].trim()
+        : ''
+
+    const validated = CategorySchema.parse({ name, description, image })
     const slug = validated.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
     await prisma.category.update({

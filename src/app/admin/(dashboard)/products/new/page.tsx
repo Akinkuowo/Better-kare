@@ -2,7 +2,7 @@ import { prisma } from '@/app/lib/db'
 import { createProduct } from '@/app/actions/products'
 import Link from 'next/link'
 import { ArrowLeft, ShoppingBag, ImageIcon, Tag, DollarSign, Package, Star, Sparkles } from 'lucide-react'
-import { ImageUploader } from './image-uploader'
+import { ImageUploader } from '@/app/components/admin/ImageUploader'
 
 export default async function NewProductPage() {
     const categories = await prisma.category.findMany({

@@ -192,7 +192,7 @@ export default function CheckoutPage() {
                                             <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mt-0.5">{item.categorySlug}</p>
                                         </div>
                                         <div className="flex flex-col justify-center text-right">
-                                            <p className="text-sm font-black text-gray-900">${(item.price * item.quantity).toFixed(2)}</p>
+                                            <p className="text-sm font-black text-gray-900">₦{(item.price * item.quantity).toLocaleString()}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -201,7 +201,7 @@ export default function CheckoutPage() {
                             <div className="border-t border-dashed border-gray-100 pt-6 space-y-4 mb-8">
                                 <div className="flex justify-between text-gray-500 font-medium">
                                     <span>Subtotal</span>
-                                    <span>${cartTotal.toFixed(2)}</span>
+                                    <span>₦{cartTotal.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-500 font-medium tracking-tight">
                                     <span>Shipping</span>
@@ -209,7 +209,7 @@ export default function CheckoutPage() {
                                 </div>
                                 <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                                     <span className="text-lg font-black text-gray-900 uppercase tracking-tighter">Total</span>
-                                    <span className="text-3xl font-black text-gray-900">${cartTotal.toFixed(2)}</span>
+                                    <span className="text-3xl font-black text-gray-900">₦{cartTotal.toLocaleString()}</span>
                                 </div>
                             </div>
 

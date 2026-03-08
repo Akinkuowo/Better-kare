@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Plus, X, UploadCloud } from 'lucide-react'
 import Image from 'next/image'
+import { ImageUploader } from './ImageUploader'
 
 interface CategoryFormProps {
     initialData?: any
@@ -13,7 +13,6 @@ interface CategoryFormProps {
 export default function CategoryForm({ initialData, onSubmit }: CategoryFormProps) {
     const router = useRouter()
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [image, setImage] = useState(initialData?.image || '')
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -21,7 +20,6 @@ export default function CategoryForm({ initialData, onSubmit }: CategoryFormProp
 
         try {
             const formData = new FormData(e.currentTarget)
-            formData.append('image', image)
             await onSubmit(formData)
             router.push('/admin/categories')
             router.refresh()
@@ -59,34 +57,13 @@ export default function CategoryForm({ initialData, onSubmit }: CategoryFormProp
 
             <div className="space-y-4">
                 <label className="text-sm font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                    <UploadCloud className="w-4 h-4 text-indigo-500" />
-                    Category Image URL
+                    Category Image
                 </label>
-                <input
-                    type="url"
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                    placeholder="https://images.unsplash.com/..."
-                    className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500 transition-all font-medium text-gray-900"
+                <ImageUploader 
+                    name="image" 
+                    multiple={false} 
+                    initialUrls={initialData?.image ? [initialData.image] : []} 
                 />
-
-                {image && (
-                    <div className="relative aspect-video w-full max-w-md rounded-2xl overflow-hidden shadow-lg group">
-                        <Image
-                            src={image}
-                            alt="Preview"
-                            fill
-                            className="object-cover"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setImage('')}
-                            className="absolute top-4 right-4 p-2 bg-rose-500 text-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
-                    </div>
-                )}
             </div>
 
             <div className="flex gap-4 pt-4">

@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { toast } from 'sonner'
 
 export interface CartItem {
     id: string
@@ -42,14 +43,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setCartItems(prev => {
             const existing = prev.find(i => i.id === item.id)
             if (existing) {
+                toast.success(`Increased ${item.name} quantity`)
                 return prev.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i)
             }
+            toast.success(`${item.name} added to cart`)
             return [...prev, { ...item, quantity: 1 }]
         })
     }
 
     const removeFromCart = (id: string) => {
-        setCartItems(prev => prev.filter(i => i.id !== id))
+        setCartItems(prev => {
+            const item = prev.find(i => i.id === id)
+            if (item) {
+                toast.error(`${item.name} removed from cart`)
+            }
+            return prev.filter(i => i.id !== id)
+        })
     }
 
     const updateQuantity = (id: string, quantity: number) => {

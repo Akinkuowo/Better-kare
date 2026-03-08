@@ -55,7 +55,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 <div className="flex flex-col justify-center">
                     <p className="text-sm text-gray-500 uppercase tracking-wide mb-2">{product.category.name}</p>
                     <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
-                    <p className="text-3xl font-bold text-gray-900 mb-6">${product.price.toFixed(2)}</p>
+                    <p className="text-3xl font-bold text-gray-900 mb-6">₦{product.price.toLocaleString()}</p>
 
                     {product.description && (
                         <p className="text-gray-600 leading-relaxed mb-8">{product.description}</p>

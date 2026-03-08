@@ -1,8 +1,8 @@
 import { prisma } from "@/app/lib/db"
 import Link from "next/link"
 import Image from "next/image"
-import { deleteCategory } from "@/app/actions/category"
 import { Pencil, Trash2, Plus } from "lucide-react"
+import { DeleteCategoryButton } from "./DeleteCategoryButton"
 
 export default async function AdminCategoriesPage() {
     const categories = await prisma.category.findMany({
@@ -49,17 +49,7 @@ export default async function AdminCategoriesPage() {
                                     >
                                         <Pencil className="w-5 h-5" />
                                     </Link>
-                                    <form action={deleteCategory.bind(null, category.id)}>
-                                        <button
-                                            type="submit"
-                                            className="p-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                                            onClick={(e) => {
-                                                if (!confirm('Are you sure you want to delete this category?')) e.preventDefault()
-                                            }}
-                                        >
-                                            <Trash2 className="w-5 h-5" />
-                                        </button>
-                                    </form>
+                                    <DeleteCategoryButton id={category.id} />
                                 </div>
                             </div>
                             <p className="text-gray-600 text-sm line-clamp-2">{category.description || 'No description available.'}</p>

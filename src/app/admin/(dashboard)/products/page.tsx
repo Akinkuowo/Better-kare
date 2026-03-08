@@ -71,7 +71,7 @@ export default async function AdminProductsPage() {
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900 flex items-center gap-2">
                         {product.name}
-                        {product.isNew && (
+                        {(product as any).isNew && (
                           <span className="px-1.5 py-0.5 rounded-md bg-sky-50 text-sky-600 text-[10px] font-black uppercase border border-sky-100">
                             New
                           </span>
@@ -84,7 +84,7 @@ export default async function AdminProductsPage() {
                   <div className="text-sm text-gray-900">{product.category.name}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">${product.price.toFixed(2)}</div>
+                  <div className="text-sm text-gray-900">₦{product.price.toLocaleString()}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{product.stock}</div>

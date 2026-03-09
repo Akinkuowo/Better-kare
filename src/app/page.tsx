@@ -15,6 +15,7 @@ export default async function Home() {
   const categories = await prisma.category.findMany()
 
   const newArrivals = await prisma.product.findMany({
+    where: { isNew: true },
     orderBy: { createdAt: 'desc' },
     take: 4,
     include: { category: true },
@@ -48,7 +49,7 @@ export default async function Home() {
       <section className="mb-16">
         <h2 className="text-3xl font-bold mb-8">Shop by Category</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {categories.map((category: { id: Key | null | undefined; slug: any; image: string | StaticImport; name: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<AwaitedReactNode> | null | undefined }) => (
+          {categories.map((category) => (
             <Link
               key={category.id}
               href={`/products/${category.slug}`}
@@ -61,7 +62,7 @@ export default async function Home() {
                       ? JSON.parse(category.image)[0]
                       : category.image
                   }
-                  alt={(category.name as string) || ""}
+                  alt={category.name}
                   fill
                   className="object-cover group-hover:scale-110 transition duration-300"
                 />

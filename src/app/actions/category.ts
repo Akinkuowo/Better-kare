@@ -7,7 +7,7 @@ import { z } from "zod"
 const CategorySchema = z.object({
     name: z.string().min(1),
     description: z.string().optional(),
-    image: z.string().url().optional().or(z.literal('')),
+    image: z.string().optional().or(z.literal('')),
 })
 
 export async function createCategory(formData: FormData) {

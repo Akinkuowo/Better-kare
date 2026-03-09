@@ -59,6 +59,44 @@ export async function createProduct(formData: FormData) {
     redirect('/admin/products')
 }
 
+export async function updateProduct(id: string, formData: FormData) {
+    const name = formData.get('name') as string
+    const description = formData.get('description') as string
+    const price = parseFloat(formData.get('price') as string)
+    const stock = parseInt(formData.get('stock') as string, 10)
+    const categoryId = formData.get('categoryId') as string
+    const featured = formData.get('featured') === 'on'
+    const isNew = formData.get('isNew') === 'on'
+    const imagesRaw = formData.get('images') as string
+
+    // Parse image URLs from newline-separated string
+    const images = imagesRaw
+        .split('\n')
+        .map((url) => url.trim())
+        .filter((url) => url.length > 0)
+
+    if (!name || !price || !categoryId) {
+        throw new Error('Name, price, and category are required.')
+    }
+
+    await prisma.product.update({
+        where: { id },
+        data: {
+            name,
+            description,
+            price,
+            stock: isNaN(stock) ? 0 : stock,
+            categoryId,
+            featured,
+            isNew,
+            images,
+        },
+    })
+
+    revalidatePath('/admin/products')
+    redirect('/admin/products')
+}
+
 export async function deleteProduct(id: string) {
     await prisma.product.delete({ where: { id } })
     revalidatePath('/admin/products')

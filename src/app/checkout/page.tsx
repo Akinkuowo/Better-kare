@@ -1,15 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCart } from '@/app/context/CartContext'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { PaystackButton } from 'react-paystack'
+import dynamic from 'next/dynamic'
+const PaystackButton: any = dynamic(() => import('react-paystack').then((mod) => mod.PaystackButton), {
+    ssr: false,
+})
 import { CreditCard, MapPin, Phone, Mail, User, ShieldCheck } from 'lucide-react'
 
 export default function CheckoutPage() {
     const { cartItems, cartTotal, clearCart } = useCart()
     const router = useRouter()
+    const [mounted, setMounted] = useState(false)
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
@@ -19,8 +23,17 @@ export default function CheckoutPage() {
         city: '',
     })
 
-    if (cartItems.length === 0) {
-        router.push('/cart')
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    useEffect(() => {
+        if (mounted && cartItems.length === 0) {
+            router.push('/cart')
+        }
+    }, [mounted, cartItems, router])
+
+    if (!mounted || cartItems.length === 0) {
         return null
     }
 

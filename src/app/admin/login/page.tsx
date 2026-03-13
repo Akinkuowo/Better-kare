@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Shield, ArrowRight, Lock, Mail } from 'lucide-react'
 
-export default function AdminLoginPage() {
+function AdminLoginContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [email, setEmail] = useState('')
@@ -127,5 +127,13 @@ export default function AdminLoginPage() {
                 </div>
             </div>
         </div>
+    )
+}
+
+export default function AdminLoginPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <AdminLoginContent />
+        </Suspense>
     )
 }

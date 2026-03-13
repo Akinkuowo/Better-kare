@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { CheckCircle, Package, ArrowRight, ShoppingBag } from 'lucide-react'
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
     const searchParams = useSearchParams()
     const orderId = searchParams.get('id')
     const [mounted, setMounted] = useState(false)
@@ -70,5 +70,13 @@ export default function CheckoutSuccessPage() {
                 </div>
             </div>
         </div>
+    )
+}
+
+export default function CheckoutSuccessPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <CheckoutSuccessContent />
+        </Suspense>
     )
 }

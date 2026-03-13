@@ -14,7 +14,7 @@ const productSchema = z.object({
     price: z.number().min(0, 'Price must be positive'),
     categoryId: z.string().min(1, 'Category is required'),
     stock: z.number().int().min(0, 'Stock must be 0 or more'),
-    featured: z.boolean().default(false),
+    featured: z.boolean(),
 })
 
 type ProductFormData = z.infer<typeof productSchema>
